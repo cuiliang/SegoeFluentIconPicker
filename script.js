@@ -1499,6 +1499,37 @@ function getIconChar(code) {
     return String.fromCharCode(parseInt(code, 16));
 }
 
+// 将图标代码转换为不同格式
+function formatIconCode(code, format) {
+    switch(format) {
+        case 'unicode':
+            return `U+${code}`;
+        case 'html':
+            return `&#x${code};`;
+        case 'url':
+            // 转换为URL编码格式
+            const char = getIconChar(code);
+            let urlEncoded = '';
+            for (let i = 0; i < char.length; i++) {
+                urlEncoded += '%' + char.charCodeAt(i).toString(16).toUpperCase().padStart(2, '0');
+            }
+            return urlEncoded;
+        default:
+            return `U+${code}`;
+    }
+}
+
+// 获取当前选择的复制格式
+function getSelectedFormat() {
+    const formatRadios = document.querySelectorAll('input[name="copyFormat"]');
+    for (const radio of formatRadios) {
+        if (radio.checked) {
+            return radio.value;
+        }
+    }
+    return 'unicode'; // 默认为Unicode格式
+}
+
 // 显示复制成功提示
 let notificationTimeout;
 function showCopyNotification() {
@@ -1556,9 +1587,18 @@ function createIconItem(icon) {
 
     // 添加点击复制功能
     item.addEventListener('click', () => {
-        copyToClipboard(getIconChar(icon.code)); // 复制图标字符本身
-        // 或者复制 Unicode 代码：copyToClipboard(`\\u${icon.code}`);
-        // 或者复制纯代码: copyToClipboard(icon.code);
+        const format = getSelectedFormat();
+        let textToCopy;
+        
+        if (format === 'unicode' && !document.querySelector('input[value="unicode"]').hasAttribute('data-use-code')) {
+            // 复制图标字符本身（默认的Unicode字符行为）
+            textToCopy = getIconChar(icon.code);
+        } else {
+            // 复制不同格式的编码
+            textToCopy = formatIconCode(icon.code, format);
+        }
+        
+        copyToClipboard(textToCopy);
     });
 
     return item;
@@ -1597,9 +1637,52 @@ function filterIcons() {
     });
 }
 
+// 更新格式说明
+function updateFormatExample() {
+    const format = getSelectedFormat();
+    const exampleCode = 'E72B'; // 后退图标作为示例
+    
+    const labels = document.querySelectorAll('.format-options label');
+    labels.forEach(label => {
+        const radio = label.querySelector('input[type="radio"]');
+        const formatValue = radio.value;
+        
+        // 重置所有标签文本
+        label.innerHTML = `<input type="radio" name="copyFormat" value="${formatValue}"${formatValue === format ? ' checked' : ''}> ${getFormatName(formatValue)}`;
+        
+        // 为当前选中的格式添加示例
+        if (formatValue === format) {
+            const example = document.createElement('span');
+            example.classList.add('format-example');
+            example.textContent = ` (${formatIconCode(exampleCode, formatValue)})`;
+            label.appendChild(example);
+        }
+    });
+}
+
+// 获取格式的友好名称
+function getFormatName(format) {
+    switch(format) {
+        case 'unicode': return 'Unicode字符';
+        case 'html': return 'HTML/XAML编码';
+        case 'url': return 'URL编码';
+        default: return '未知格式';
+    }
+}
+
 // --- 初始化 ---
 document.addEventListener('DOMContentLoaded', () => {
-    renderIcons(iconData); // 页面加载时渲染所有图标
+    // 渲染所有图标
+    renderIcons(iconData);
+    
+    // 添加格式选择事件监听
+    const formatRadios = document.querySelectorAll('input[name="copyFormat"]');
+    formatRadios.forEach(radio => {
+        radio.addEventListener('change', updateFormatExample);
+    });
+    
+    // 初始化格式示例
+    updateFormatExample();
 });
 
 // --- 事件监听 ---

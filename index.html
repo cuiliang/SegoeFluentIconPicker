@@ -15,6 +15,14 @@
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="搜索图标 (中文或英文名称)...">
         </div>
+        <div class="format-selector">
+            <span>复制格式：</span>
+            <div class="format-options">
+                <label><input type="radio" name="copyFormat" value="unicode" > Unicode字符 (U+E720)</label>
+                <label><input type="radio" name="copyFormat" value="html" checked> HTML/XAML编码 (&#xE720;)</label>
+                <label><input type="radio" name="copyFormat" value="url"> URL编码 (%EE%9C%A0)</label>
+            </div>
+        </div>
         <div id="iconGrid" class="icon-grid">
             <!-- 图标将由 JavaScript 动态填充 -->
         </div>
