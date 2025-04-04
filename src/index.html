@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segoe Fluent 图标选择器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Segoe Fluent 图标选择器</h1>
+        <p class="font-note">
+            <strong>注意:</strong> 需要安装 <a href="https://learn.microsoft.com/en-us/windows/apps/design/style/segoe-fluent-icons-font#how-do-i-get-this-font" target="_blank" rel="noopener noreferrer">'Segoe Fluent Icons'</a> 字体才能正确显示图标。
+        </p>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜索图标 (中文或英文名称)...">
+        </div>
+        <div id="iconGrid" class="icon-grid">
+            <!-- 图标将由 JavaScript 动态填充 -->
+        </div>
+    </div>
+
+    <div id="copy-notification" class="copy-notification">已复制！</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
