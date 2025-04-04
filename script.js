@@ -1487,10 +1487,91 @@ const iconData = [
 
 ];    
 
+// --- 图标分类 ---
+// 定义图标分类，每个分类包含一个规则用于确定图标是否属于该分类
+const iconCategories = [
+    { id: 'all', name_zh: '全部', name_en: 'All', filter: () => true },
+    { id: 'ui', name_zh: '界面元素', name_en: 'UI Elements', filter: icon => 
+        ['Button', 'Toggle', 'Checkbox', 'Radio', 'Slider', 'Progress', 'Navigation', 'Menu', 'Dialog', 'Pagination', 'Tab', 'Grid'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('按钮') || icon.name_zh.includes('菜单') || icon.name_zh.includes('导航') || 
+            icon.name_zh.includes('复选') || icon.name_zh.includes('单选') || icon.name_zh.includes('滑块') || icon.name_zh.includes('进度') || 
+            icon.name_zh.includes('对话') || icon.name_zh.includes('分页') || icon.name_zh.includes('选项卡')
+        )
+    },
+    { id: 'devices', name_zh: '设备与硬件', name_en: 'Devices & Hardware', filter: icon => 
+        ['Device', 'Phone', 'Tablet', 'Laptop', 'Desktop', 'PC', 'Camera', 'Headphone', 'Keyboard', 'Mouse', 'Speaker', 'Hardware', 'Battery'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('设备') || icon.name_zh.includes('电脑') || icon.name_zh.includes('手机') || 
+            icon.name_zh.includes('平板') || icon.name_zh.includes('相机') || icon.name_zh.includes('耳机') || icon.name_zh.includes('键盘') || 
+            icon.name_zh.includes('鼠标') || icon.name_zh.includes('扬声器') || icon.name_zh.includes('硬件') || icon.name_zh.includes('电池')
+        )
+    },
+    { id: 'communication', name_zh: '通信与社交', name_en: 'Communication & Social', filter: icon => 
+        ['Mail', 'Message', 'Phone', 'Chat', 'Call', 'Video', 'Share', 'People', 'Contact', 'Group', 'Meeting', 'Social'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('邮件') || icon.name_zh.includes('消息') || icon.name_zh.includes('电话') || 
+            icon.name_zh.includes('聊天') || icon.name_zh.includes('通话') || icon.name_zh.includes('视频') || icon.name_zh.includes('分享') || 
+            icon.name_zh.includes('联系人') || icon.name_zh.includes('群组') || icon.name_zh.includes('会议') || icon.name_zh.includes('社交')
+        )
+    },
+    { id: 'media', name_zh: '媒体与编辑', name_en: 'Media & Editing', filter: icon => 
+        ['Play', 'Pause', 'Stop', 'Music', 'Video', 'Movie', 'Audio', 'Picture', 'Image', 'Photo', 'Camera', 'Gallery', 'Edit', 'Crop', 'Cut'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('播放') || icon.name_zh.includes('暂停') || icon.name_zh.includes('停止') || 
+            icon.name_zh.includes('音乐') || icon.name_zh.includes('视频') || icon.name_zh.includes('电影') || icon.name_zh.includes('音频') || 
+            icon.name_zh.includes('图片') || icon.name_zh.includes('图像') || icon.name_zh.includes('照片') || icon.name_zh.includes('相机') || 
+            icon.name_zh.includes('编辑') || icon.name_zh.includes('裁剪') || icon.name_zh.includes('剪切')
+        )
+    },
+    { id: 'files', name_zh: '文件与存储', name_en: 'Files & Storage', filter: icon => 
+        ['File', 'Folder', 'Document', 'Storage', 'Save', 'Download', 'Upload', 'Cloud', 'Sync', 'Drive', 'Disk'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('文件') || icon.name_zh.includes('文档') || icon.name_zh.includes('存储') || 
+            icon.name_zh.includes('保存') || icon.name_zh.includes('下载') || icon.name_zh.includes('上传') || icon.name_zh.includes('云') || 
+            icon.name_zh.includes('同步') || icon.name_zh.includes('驱动') || icon.name_zh.includes('磁盘')
+        )
+    },
+    { id: 'maps', name_zh: '地图与位置', name_en: 'Maps & Location', filter: icon => 
+        ['Map', 'Location', 'Pin', 'Direction', 'Navigation', 'Position', 'Compass', 'Route', 'Traffic', 'City', 'World', 'Globe'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('地图') || icon.name_zh.includes('位置') || icon.name_zh.includes('钉') || 
+            icon.name_zh.includes('方向') || icon.name_zh.includes('导航') || icon.name_zh.includes('指南针') || icon.name_zh.includes('路线') || 
+            icon.name_zh.includes('交通') || icon.name_zh.includes('城市') || icon.name_zh.includes('世界') || icon.name_zh.includes('地球')
+        )
+    },
+    { id: 'settings', name_zh: '设置与系统', name_en: 'Settings & System', filter: icon => 
+        ['Settings', 'System', 'Power', 'Control', 'Setting', 'Option', 'Configuration', 'Customize', 'Update'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('设置') || icon.name_zh.includes('系统') || icon.name_zh.includes('电源') || 
+            icon.name_zh.includes('控制') || icon.name_zh.includes('选项') || icon.name_zh.includes('配置') || icon.name_zh.includes('自定义') || 
+            icon.name_zh.includes('更新')
+        )
+    },
+    { id: 'status', name_zh: '状态与通知', name_en: 'Status & Notifications', filter: icon => 
+        ['Status', 'Notification', 'Alert', 'Warning', 'Error', 'Info', 'Success', 'Check', 'Badge', 'Signal', 'Connection', 'Wifi'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('状态') || icon.name_zh.includes('通知') || icon.name_zh.includes('警告') || 
+            icon.name_zh.includes('错误') || icon.name_zh.includes('信息') || icon.name_zh.includes('成功') || icon.name_zh.includes('对勾') || 
+            icon.name_zh.includes('徽章') || icon.name_zh.includes('信号') || icon.name_zh.includes('连接') || icon.name_zh.includes('WiFi')
+        )
+    },
+    { id: 'actions', name_zh: '操作与功能', name_en: 'Actions & Functions', filter: icon => 
+        ['Add', 'Remove', 'Delete', 'Create', 'Edit', 'Search', 'Filter', 'Sort', 'Copy', 'Paste', 'Cut', 'Undo', 'Redo'].some(term => 
+            icon.name_en.includes(term) || icon.name_zh.includes('添加') || icon.name_zh.includes('移除') || icon.name_zh.includes('删除') || 
+            icon.name_zh.includes('创建') || icon.name_zh.includes('编辑') || icon.name_zh.includes('搜索') || icon.name_zh.includes('筛选') || 
+            icon.name_zh.includes('排序') || icon.name_zh.includes('复制') || icon.name_zh.includes('粘贴') || icon.name_zh.includes('剪切') || 
+            icon.name_zh.includes('撤销') || icon.name_zh.includes('重做')
+        )
+    },
+    { id: 'others', name_zh: '其他图标', name_en: 'Others', filter: icon => 
+        // 不属于其他分类的图标
+        !['ui', 'devices', 'communication', 'media', 'files', 'maps', 'settings', 'status', 'actions'].some(categoryId => 
+            iconCategories.find(cat => cat.id === categoryId)?.filter(icon)
+        )
+    }
+];
+
+// 当前选中的分类
+let currentCategory = 'all';
+
 // --- DOM 元素 ---
 const iconGrid = document.getElementById('iconGrid');
 const searchInput = document.getElementById('searchInput');
 const copyNotification = document.getElementById('copy-notification');
+const categoryNav = document.getElementById('categoryNav');
 
 // --- 功能 ---
 
@@ -1616,24 +1697,66 @@ function renderIcons(iconsToRender) {
 // 过滤图标
 function filterIcons() {
     const searchTerm = searchInput.value.toLowerCase().trim();
-    const allItems = iconGrid.querySelectorAll('.icon-item');
-
-    allItems.forEach(item => {
-        const nameEn = item.querySelector('.icon-name-en').textContent.toLowerCase();
-        const nameZh = item.querySelector('.icon-name-zh').textContent.toLowerCase();
-        const code = item.dataset.code.toLowerCase();
-
-        // 检查英文名、中文名或代码是否匹配
-        const isMatch = nameEn.includes(searchTerm) ||
-                       (nameZh !== '-' && nameZh.includes(searchTerm)) ||
-                       code.includes(searchTerm) ||
-                       `\\u${code}`.includes(searchTerm); // 也允许搜索 \uXXXX
-
-        if (isMatch) {
-            item.classList.remove('hidden');
-        } else {
-            item.classList.add('hidden');
+    
+    // 根据当前分类和搜索词过滤图标
+    const categoryFilter = iconCategories.find(cat => cat.id === currentCategory)?.filter || (() => true);
+    
+    const filteredIcons = iconData.filter(icon => {
+        // 首先检查是否属于当前分类
+        if (!categoryFilter(icon)) {
+            return false;
         }
+        
+        // 如果没有搜索词，仅按分类过滤
+        if (!searchTerm) {
+            return true;
+        }
+        
+        // 如果有搜索词，则同时匹配搜索词
+        const nameEn = icon.name_en.toLowerCase();
+        const nameZh = (icon.name_zh || '').toLowerCase();
+        const code = icon.code.toLowerCase();
+        
+        return nameEn.includes(searchTerm) ||
+               nameZh.includes(searchTerm) ||
+               code.includes(searchTerm) ||
+               `\\u${code}`.includes(searchTerm);
+    });
+    
+    renderIcons(filteredIcons);
+}
+
+// 创建分类导航
+function createCategoryNav() {
+    categoryNav.innerHTML = '';
+    
+    iconCategories.forEach(category => {
+        const navItem = document.createElement('div');
+        navItem.classList.add('category-item');
+        navItem.dataset.category = category.id;
+        
+        if (category.id === currentCategory) {
+            navItem.classList.add('active');
+        }
+        
+        navItem.textContent = category.name_zh;
+        navItem.title = category.name_en;
+        
+        navItem.addEventListener('click', () => {
+            // 更新当前分类
+            currentCategory = category.id;
+            
+            // 更新导航项的活动状态
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            navItem.classList.add('active');
+            
+            // 重新过滤图标
+            filterIcons();
+        });
+        
+        categoryNav.appendChild(navItem);
     });
 }
 
@@ -1672,8 +1795,11 @@ function getFormatName(format) {
 
 // --- 初始化 ---
 document.addEventListener('DOMContentLoaded', () => {
+    // 创建分类导航
+    createCategoryNav();
+    
     // 渲染所有图标
-    renderIcons(iconData);
+    filterIcons(); // 使用过滤函数代替直接渲染，以应用当前分类
     
     // 添加格式选择事件监听
     const formatRadios = document.querySelectorAll('input[name="copyFormat"]');
